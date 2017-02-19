@@ -1,0 +1,43 @@
+{
+  "name": "jc8",
+  "productName": "Jc8",
+  "version": "0.0.1",
+  "description": "JS Chip8 emulator",
+  "license": "MIT",
+  "repository": "valep27/jc8",
+  "author": {
+    "name": "Valerio Pipolo",
+    "email": "valep27@gmail.com",
+    "url": "github.com/valep27"
+  },
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --asar --overwrite --all"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "electron-debug": "^1.0.0"
+  },
+  "devDependencies": {
+    "devtron": "^1.1.0",
+    "electron-packager": "^8.0.0",
+    "electron": "^1.3.3",
+    "xo": "^0.16.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
