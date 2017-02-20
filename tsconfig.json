@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"outFile": "dist/jc8.js",
+		"sourceMap": true
+	},
+	"include": [
+		"src/**/*"
+	],
+	"compileOnSave": true
+}

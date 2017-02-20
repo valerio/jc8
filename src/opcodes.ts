@@ -1,10 +1,12 @@
+import {Chip8} from './cpu'
+
 /**
  * SetVxToImmediate implements opcode 6XNN.
  * It will set NN (8 bit immediate) to the register Vx.
  *
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SetVxToImmediate = function(c8) {
+export function SetVxToImmediate(c8: Chip8) {
 	let x = (c8.opcode & 0x0F00) >> 8;
 	let nn = c8.opcode & 0xFF;
 	c8.V[x] = nn;
@@ -16,7 +18,7 @@ exports.SetVxToImmediate = function(c8) {
  * Resets the screen pixel values
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.ClearScreen = function(c8) {
+export function ClearScreen(c8: Chip8) {
 	for (let i = 0; i < c8.vram.length; i++) {
 		c8.vram[i] = 0;
 	}
@@ -28,7 +30,7 @@ exports.ClearScreen = function(c8) {
  * Returns from a subroutine, meaning it will set the PC to the last stack value.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.ReturnFromSub = function(c8) {
+export function ReturnFromSub(c8: Chip8) {
 	c8.pc = c8.stack[c8.sp];
 	c8.sp++;
 	c8.pc += 2;
@@ -39,7 +41,7 @@ exports.ReturnFromSub = function(c8) {
  * Sets the program counter to NNN.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.JumpAddr = function(c8) {
+export function JumpAddr(c8: Chip8) {
 	c8.pc = c8.opcode & 0x0FFF;
 }
 
@@ -48,7 +50,7 @@ exports.JumpAddr = function(c8) {
  * It will call the subroutine at address NNN, i.e. move the PC to it.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.CallSubAtNNN = function(c8) {
+export function CallSubAtNNN(c8: Chip8) {
 	c8.stack[c8.sp] = c8.pc;
 	c8.sp--;
 	c8.pc = c8.opcode & 0x0FFF;
@@ -59,7 +61,7 @@ exports.CallSubAtNNN = function(c8) {
  * It will skip the next instruction if Vx == NN.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SkipIfVxEqualToNN = function(c8) {
+export function SkipIfVxEqualToNN(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let nn = c8.opcode & 0xFF;
 	c8.pc += c8.V[x] === nn ? 4 : 2;
@@ -70,7 +72,7 @@ exports.SkipIfVxEqualToNN = function(c8) {
  * It will skip the next instruction if Vx != NN.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SkipIfVxNotEqualToNN = function(c8) {
+export function SkipIfVxNotEqualToNN(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let nn = c8.opcode & 0xFF;
 	c8.pc += c8.V[x] !== nn ? 4 : 2;
@@ -81,7 +83,7 @@ exports.SkipIfVxNotEqualToNN = function(c8) {
  * It will skip the next instruction if Vx == Vy.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SkipIfVxEqualToVy = function(c8) {
+export function SkipIfVxEqualToVy(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 	c8.pc += c8.V[x] === c8.V[y] ? 4 : 2;
@@ -92,7 +94,7 @@ exports.SkipIfVxEqualToVy = function(c8) {
  * It will add NN to the Vx register
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.AddNNToVx = function(c8) {
+export function AddNNToVx(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let nn = (c8.opcode & 0x00FF);
 	c8.V[x] += nn;
@@ -104,7 +106,7 @@ exports.AddNNToVx = function(c8) {
  * Assigns the value of Vy to Vx
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.AssignVyToVx = function(c8) {
+export function AssignVyToVx(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 	c8.V[x] = c8.V[y];
@@ -116,7 +118,7 @@ exports.AssignVyToVx = function(c8) {
  * Assigns the value of Vx | Vy to Vx
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.VxOrVy = function(c8) {
+export function VxOrVy(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 	c8.V[x] = c8.V[x] | c8.V[y];
@@ -128,7 +130,7 @@ exports.VxOrVy = function(c8) {
  * Assigns the value of Vx & Vy to Vx
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.VxAndVy = function(c8) {
+export function VxAndVy(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 	c8.V[x] = c8.V[x] & c8.V[y];
@@ -140,7 +142,7 @@ exports.VxAndVy = function(c8) {
  * Assigns the value of Vx xor Vy to Vx
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.VxXorVy = function(c8) {
+export function VxXorVy(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 	c8.V[x] = c8.V[x] ^ c8.V[y];
@@ -152,7 +154,7 @@ exports.VxXorVy = function(c8) {
  * Math	Vx += Vy	Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.AddVyToVx = function(c8) {
+export function AddVyToVx(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 
@@ -167,7 +169,7 @@ exports.AddVyToVx = function(c8) {
  * Math	Vx -= Vy	VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SubVyToVx = function(c8) {
+export function SubVyToVx(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 
@@ -182,7 +184,7 @@ exports.SubVyToVx = function(c8) {
  * BitOp	Vx >> 1	Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift.[2]
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.ShiftVxRight = function(c8) {
+export function ShiftVxRight(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let lsb = x & 1;
 	c8.V[x] = c8.V[x] >> 1;
@@ -195,7 +197,7 @@ exports.ShiftVxRight = function(c8) {
  * Math	Vx=Vy-Vx	Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SubVxToVy = function(c8) {
+export function SubVxToVy(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 	let result = c8.V[y] - c8.V[x];
@@ -209,7 +211,7 @@ exports.SubVxToVy = function(c8) {
  * BitOp	Vx << 1	Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.[2]
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.ShiftVxLeft = function(c8) {
+export function ShiftVxLeft(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let msb = x & 0x80;
 	c8.V[x] = c8.V[x] << 1;
@@ -222,7 +224,7 @@ exports.ShiftVxLeft = function(c8) {
  * Cond	if(Vx!=Vy)	Skips the next instruction if VX doesn't equal VY.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SkipIfVxNotEqualToVy = function(c8) {
+export function SkipIfVxNotEqualToVy(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
 	c8.pc = c8.V[x] !== c8.V[y] ? 4 : 2;
@@ -233,7 +235,7 @@ exports.SkipIfVxNotEqualToVy = function(c8) {
  * MEM	I = NNN	Sets I to the address NNN.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SetMemoryNNN = function(c8) {
+export function SetMemoryNNN(c8: Chip8) {
 	c8.I = c8.opcode & 0x0FFF;
 	c8.pc += 2;
 }
@@ -243,7 +245,7 @@ exports.SetMemoryNNN = function(c8) {
  * Flow PC=V0+NNN	Jumps to the address NNN plus V0.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.JumpAddrSum = function(c8) {
+export function JumpAddrSum(c8: Chip8) {
 	c8.pc = (c8.opcode & 0x0FFF) + c8.V[0];
 }
 
@@ -252,10 +254,10 @@ exports.JumpAddrSum = function(c8) {
  * Rand Vx=rand()&NN	Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.RandToVx = function(c8) {
-	x = (c8.opcode >> 8) & 0x000F;
-	nn = c8.opcode & 0xFF;
-	c8.V[x] = Math.trunc(Math.random() * 255) & nn;
+export function RandToVx(c8: Chip8) {
+	let x = (c8.opcode >> 8) & 0x000F;
+	let nn = c8.opcode & 0xFF;
+	c8.V[x] = Math.floor(Math.random() * 255) & nn;
 	c8.pc += 2;
 }
 
@@ -264,7 +266,7 @@ exports.RandToVx = function(c8) {
  * Disp	draw(Vx,Vy,N)	Draws a sprite at coordinate (VX, VY)
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.Draw = function(c8) {
+export function Draw(c8: Chip8) {
 	let x = c8.V[(c8.opcode >> 8) & 0xF];
 	let y = c8.V[(c8.opcode >> 4) & 0xF];
 	let height = c8.opcode & 0xF;
@@ -272,7 +274,7 @@ exports.Draw = function(c8) {
 	c8.V[0xF] = 0;
 
 	for (let row = 0; row < height; row++) {
-		pixelRow = c8.memory[c8.I+row];
+		let pixelRow = c8.memory[c8.I+row];
 
 		for (let col = 0; col < 8; col++) {
 			// check if pixel went from 0 to 1
@@ -303,7 +305,7 @@ exports.Draw = function(c8) {
  * KeyOp	if(key()==Vx)	Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SkipIfKeyPressed = function(c8) {
+export function SkipIfKeyPressed(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let keyPressed = c8.keypad[x] !== 0;
 	c8.pc += keyPressed ? 4 : 2;
@@ -314,7 +316,7 @@ exports.SkipIfKeyPressed = function(c8) {
  * KeyOp	if(key()!=Vx)	Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SkipIfKeyNotPressed = function(c8) {
+export function SkipIfKeyNotPressed(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let keyNotPressed = c8.keypad[x] === 0;
 	c8.pc += keyNotPressed ? 4 : 2;
@@ -325,9 +327,9 @@ exports.SkipIfKeyNotPressed = function(c8) {
  * Timer	Vx = get_delay()	Sets VX to the value of the delay timer.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SetVxToDelay = function(c8) {
+export function SetVxToDelay(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	c8.V[x] = c8.delayt;
+	c8.V[x] = c8.delayTimer;
 	c8.pc += 2;
 }
 
@@ -336,7 +338,7 @@ exports.SetVxToDelay = function(c8) {
  * KeyOp	Vx = get_key()	A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event)
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.WaitForKeyPress = function(c8) {
+export function WaitForKeyPress(c8: Chip8) {
 	c8.stopped = true;
 	c8.pc += 2;
 }
@@ -346,9 +348,9 @@ exports.WaitForKeyPress = function(c8) {
  * Timer	delay_timer(Vx)	Sets the delay timer to VX.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SetDelayToVx = function(c8) {
+export function SetDelayToVx(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	c8.delayt = c8.V[x];
+	c8.delayTimer = c8.V[x];
 	c8.pc += 2;
 }
 
@@ -357,9 +359,9 @@ exports.SetDelayToVx = function(c8) {
  * Sound	sound_timer(Vx)	Sets the sound timer to VX.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SetSoundToVx = function(c8) {
+export function SetSoundToVx(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	c8.soundt = c8.V[x];
+	c8.soundTimer = c8.V[x];
 	c8.pc += 2;
 }
 
@@ -368,7 +370,7 @@ exports.SetSoundToVx = function(c8) {
  * MEM	I +=Vx	Adds VX to I.[3]
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.AddVxToI = function(c8) {
+export function AddVxToI(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	c8.I += c8.V[x];
 	c8.pc += 2;
@@ -379,7 +381,7 @@ exports.AddVxToI = function(c8) {
  * MEM	I=sprite_addr[Vx]	Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SetIToSpriteAddr = function(c8) {
+export function SetIToSpriteAddr(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	c8.I = c8.V[x] * 5;
 	c8.pc += 2;
@@ -390,11 +392,11 @@ exports.SetIToSpriteAddr = function(c8) {
  * BCD	set_BCD(Vx);
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.SetBCD = function(c8) {
+export function SetBCD(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let bcdValue = c8.V[x];
-	c8.memory[c8.I] = Math.trunc(bcdValue / 100);
-	c8.memory[c8.I+1] = Math.trunc((bcdValue % 100) / 10);
+	c8.memory[c8.I] = Math.floor(bcdValue / 100);
+	c8.memory[c8.I+1] = Math.floor((bcdValue % 100) / 10);
 	c8.memory[c8.I+2] = (bcdValue % 100) % 10;
 	c8.pc += 2;
 }
@@ -404,7 +406,7 @@ exports.SetBCD = function(c8) {
  * MEM	reg_dump(Vx,&I)	Stores V0 to VX (including VX) in memory starting at address I.[4]
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.DumpRegisters = function(c8) {
+export function DumpRegisters(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 
 	for (let i = 0; i <= x; i++) {
@@ -419,7 +421,7 @@ exports.DumpRegisters = function(c8) {
  * MEM	reg_load(Vx,&I)	Fills V0 to VX (including VX) with values from memory starting at address I.[4]
  *@param {Chip8} c8 - the chip8 emulator.
  */
-exports.LoadRegisters = function(c8) {
+export function LoadRegisters(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 
 	for (let i = 0; i <= x; i++) {
