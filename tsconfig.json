@@ -4,8 +4,12 @@
 		"noImplicitAny": true,
 		"removeComments": true,
 		"preserveConstEnums": true,
-		"outFile": "dist/jc8.js",
-		"sourceMap": true
+		"outDir": "dist",
+		"sourceMap": true,
+		"moduleResolution": "node",
+		"types": [
+			"node"
+		]
 	},
 	"include": [
 		"src/**/*"

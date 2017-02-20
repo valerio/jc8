@@ -1,11 +1,11 @@
 import * as op from './opcodes'
 
-const SCREEN_HEIGHT = 64;
-const SCREEN_WIDTH = 32;
-const STACK_SIZE = 16;
-const MEMORY_SIZE = 4096; // 4kB
-const VRAM_SIZE = SCREEN_HEIGHT * SCREEN_WIDTH;
-const V_REGISTERS = 16;
+export const SCREEN_HEIGHT = 32;
+export const SCREEN_WIDTH = 64;
+export const STACK_SIZE = 16;
+export const MEMORY_SIZE = 4096; // 4kB
+export const VRAM_SIZE = SCREEN_HEIGHT * SCREEN_WIDTH;
+export const V_REGISTERS = 16;
 
 const FONT_SET = [
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0

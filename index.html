@@ -2,17 +2,16 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Electron boilerplate</title>
+		<title>JsChip8</title>
 		<link rel="stylesheet" href="index.css">
-		<script type="text/javascript" src="src/cpu.js"></script>
 	</head>
 	<body>
-		<div class="container">
-			<header>
-				<h1>Electron boilerplate</h1>
-			</header>
-			<section class="main"></section>
-			<footer></footer>
+		<div id="container">
+
 		</div>
 	</body>
+	<script type="text/javascript">
+		var main = require('./dist/main');
+		main.run();
+	</script>
 </html>
