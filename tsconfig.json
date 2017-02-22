@@ -6,10 +6,7 @@
 		"preserveConstEnums": true,
 		"outDir": "dist",
 		"sourceMap": true,
-		"moduleResolution": "node",
-		"types": [
-			"node"
-		]
+		"moduleResolution": "node"
 	},
 	"include": [
 		"src/**/*"
