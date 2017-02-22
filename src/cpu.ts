@@ -76,6 +76,17 @@ export class Chip8 {
 		this.opcode = ((this.memory[this.pc + 1] & 0xFF) << 8) | (this.memory[this.pc] & 0xFF);
 		let instr = this.decode(this.opcode);
 		instr(this);
+
+		if (this.delayTimer > 0) {
+			this.delayTimer--;
+		}
+
+		if (this.soundTimer > 0) {
+			if (this.soundTimer === 1) {
+				// TODO: play sound
+			}
+			this.soundTimer--;
+		}
 	}
 
 	/**
