@@ -116,10 +116,91 @@ export class Chip8 {
 	 * @memberOf Chip8
 	 */
 	private decode(opcode: number) {
-		// placeholder
-		return function (c8: Chip8) {
-			c8.pc += 2;
-		};
+		switch (opcode & 0xF000) {
+			case 0x0:
+				switch (opcode & 0x00FF) {
+					case 0xE0:
+						return op.ClearScreen;
+					case 0xEE:
+						return op.ReturnFromSub;
+				}
+				break;
+			case 0x1000:
+				return op.JumpAddr;
+			case 0x2000:
+				return op.CallSubAtNNN;
+			case 0x3000:
+				return op.SkipIfVxEqualToNN;
+			case 0x4000:
+				return op.SkipIfVxNotEqualToNN;
+			case 0x5000:
+				return op.SkipIfVxEqualToVy;
+			case 0x6000:
+				return op.SetVxToImmediate;
+			case 0x7000:
+				return op.AddNNToVx;
+			case 0x8000:
+				switch (opcode & 0x000F) {
+					case 0x0:
+						return op.AssignVyToVx;
+					case 0x1:
+						return op.VxOrVy;
+					case 0x2:
+						return op.VxAndVy;
+					case 0x3:
+						return op.VxXorVy;
+					case 0x4:
+						return op.AddVyToVx;
+					case 0x5:
+						return op.SubVyToVx;
+					case 0x6:
+						return op.ShiftVxRight;
+					case 0x7:
+						return op.SubVxToVy;
+					case 0xE:
+						return op.ShiftVxLeft;
+				}
+			case 0x9000:
+				return op.SkipIfVxNotEqualToVy;
+			case 0xA000:
+				return op.SetMemoryNNN;
+			case 0xB000:
+				return op.JumpAddrSum;
+			case 0xC000:
+				return op.RandToVx;
+			case 0xD000:
+				return op.Draw;
+			case 0xE000:
+				switch (opcode & 0x000F) {
+					case 0xE:
+						return op.SkipIfKeyPressed;
+					case 0x1:
+						return op.SkipIfKeyNotPressed;
+				}
+			case 0xF000:
+				switch (opcode & 0x00FF) {
+					case 0x07:
+						return op.SetVxToDelay;
+					case 0x0A:
+						return op.WaitForKeyPress;
+					case 0x15:
+						return op.SetDelayToVx;
+					case 0x18:
+						return op.SetSoundToVx;
+					case 0x1E:
+						return op.AddVxToI;
+					case 0x29:
+						return op.SetIToSpriteAddr;
+					case 0x33:
+						return op.SetBCD;
+					case 0x55:
+						return op.DumpRegisters;
+					case 0x65:
+						return op.LoadRegisters;
+				}
+		}
+		// if we got here, we got a wrong/unimplemented opcode
+		throw "Invalid opcode " + opcode;
 	}
 
 }
