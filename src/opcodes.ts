@@ -1,4 +1,4 @@
-import {Chip8} from './cpu'
+import {Chip8} from './cpu';
 
 /**
  * SetVxToImmediate implements opcode 6XNN.
@@ -280,7 +280,7 @@ export function Draw(c8: Chip8) {
 			// check if pixel went from 0 to 1
 			let colMask = 0x80 >> col;
 			let pixelUpdated = (colMask & pixelRow) !== 0;
-			let pixelAddress = (x + row + ((y + col) * 64))
+			let pixelAddress = (x + row + ((y + col) * 64));
 
 			if (pixelUpdated) {
 				// if pixel was already 1, there's a collision
