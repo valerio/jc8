@@ -1,4 +1,5 @@
-import * as op from './opcodes'
+import * as op from './opcodes';
+import * as fs from 'fs';
 
 export const SCREEN_HEIGHT = 32;
 export const SCREEN_WIDTH = 64;
@@ -61,9 +62,33 @@ export class Chip8 {
 		this.drawFlag = false;
 		this.stopped = false;
 
-		for (var i = 0; i < FONT_SET.length; i++) {
+		for (let i = 0; i < FONT_SET.length; i++) {
 			this.memory[i] = FONT_SET[i];
 		}
+	}
+
+
+	/**
+	 * Executes a single cycle of emulation.
+	 * @memberOf Chip8
+	 */
+	public step() {
+		this.opcode = ((this.memory[this.pc + 1] & 0xFF) << 8) | (this.memory[this.pc] & 0xFF);
+		let instr = this.decode(this.opcode);
+		instr(this);
+	}
+
+	/**
+	 * loadRomFile
+	 */
+	public async loadRomFile(path: string) {
+		fs.readFile(path, (err, data) => {
+			if (err) {
+				throw err;
+			}
+
+			this.load(data);
+		});
 	}
 
 	/**
@@ -71,25 +96,18 @@ export class Chip8 {
 	 * @param {number[]} data - an array of bytes to be loaded in the emulator ram.
 	 * @memberOf Chip8
 	 */
-	load(data: number[]) {
+	private load(data: Uint8Array) {
 		if (data.length > MEMORY_SIZE - 0x200) {
 			throw new Error("cannot load ROM, file size exceeds RAM: " + data.length);
 		}
 
-		for (var i = 0; i < data.length; i++) {
+		console.log('loading rom file... size: ' + data.length + ' bytes');
+
+		for (let i = 0; i < data.length; i++) {
 			this.memory[0x200 + i] = data[i];
 		}
 	}
 
-	/**
-	 * Executes a single cycle of emulation.
-	 * @memberOf Chip8
-	 */
-	step() {
-		this.opcode = ((this.memory[this.pc + 1] & 0xFF) << 8) | (this.memory[this.pc] & 0xFF);
-		let instr = this.decode(this.opcode);
-		instr(this);
-	}
 
 	/**
 	 * Decodes an opcode and returns a function that implements it.
@@ -97,7 +115,7 @@ export class Chip8 {
 	 * @return {function(Chip8) : void} a function that implements the opcode.
 	 * @memberOf Chip8
 	 */
-	decode(opcode: number) {
+	private decode(opcode: number) {
 		// placeholder
 		return function (c8: Chip8) {
 			c8.pc += 2;
