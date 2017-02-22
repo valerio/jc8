@@ -81,7 +81,7 @@ export class Chip8 {
 	/**
 	 * loadRomFile
 	 */
-	public async loadRomFile(path: string) {
+	public loadRomFile(path: string) {
 		fs.readFile(path, (err, data) => {
 			if (err) {
 				throw err;
