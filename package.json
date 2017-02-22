@@ -25,6 +25,7 @@
     "electron"
   ],
   "dependencies": {
+    "@types/node": "^7.0.5",
     "electron-debug": "^1.0.0"
   },
   "devDependencies": {
