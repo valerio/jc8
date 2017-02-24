@@ -1,8 +1,11 @@
 import * as cpu from './cpu';
 
-export function run() {
-	let c8 = new cpu.Chip8();
-	console.log(c8);
+var emulator : cpu.Chip8;
+var frameHandle : NodeJS.Timer;
+
+export function init() {
+	emulator = new cpu.Chip8();
+	emulator.loadRomFile('roms/PONG');
 
 	let canvas = document.createElement('canvas');
 	canvas.height = cpu.SCREEN_HEIGHT * 10;
@@ -25,4 +28,13 @@ export function run() {
 	}
 
 	ctx.putImageData(imgData, 0, 0, 0, 0, canvas.width, canvas.height);
+	frameHandle = setInterval(frame, 33);
+}
+
+function frame() {
+	try {
+		emulator.step();
+	} catch (error) {
+		clearInterval(frameHandle);
+	}
 }
