@@ -27,6 +27,13 @@ const FONT_SET = [
 	0xF0, 0x80, 0xF0, 0x80, 0x80, // F
 ];
 
+const KEY_MAP = {
+	'1': 0,	'2': 1,	'3': 2,	'4': 3,
+	'q': 4,	'w': 5,	'e': 6,	'r': 7,
+	'a': 8,	's': 9,	'd': 10,'f': 11,
+	'z': 12,'x': 13,'c': 14,'v': 15,
+};
+
 /**
  * The core of the emulator.
  * Implements basic functionality and holds all the required data.
@@ -75,6 +82,9 @@ export class Chip8 {
 	public step() {
 		this.opcode = ((this.memory[this.pc + 1] & 0xFF) << 8) | (this.memory[this.pc] & 0xFF);
 		let instr = this.decode(this.opcode);
+
+		console.log('execute opcode 0x' + this.opcode.toString(16));
+
 		instr(this);
 
 		if (this.delayTimer > 0) {
@@ -89,9 +99,14 @@ export class Chip8 {
 		}
 	}
 
-	/**
-	 * loadRomFile
-	 */
+	public handleKeyDownEvent(event: KeyboardEvent) {
+		this.keypad[KEY_MAP[event.key]] = 1;
+	}
+
+	public handleKeyUpEvent(event: KeyboardEvent) {
+		this.keypad[KEY_MAP[event.key]] = 0;
+	}
+
 	public loadRomFile(path: string) {
 		fs.readFile(path, (err, data) => {
 			if (err) {
@@ -211,7 +226,7 @@ export class Chip8 {
 				}
 		}
 		// if we got here, we got a wrong/unimplemented opcode
-		throw "Invalid opcode " + opcode;
+		throw new Error("Invalid opcode " + opcode);
 	}
 
 }
