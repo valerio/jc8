@@ -29,6 +29,9 @@ export function init() {
 
 	ctx.putImageData(imgData, 0, 0, 0, 0, canvas.width, canvas.height);
 	frameHandle = setInterval(frame, 33);
+
+	window.addEventListener("keydown", emulator.handleKeyDownEvent);
+	window.addEventListener("keyup", emulator.handleKeyUpEvent);
 }
 
 function frame() {
