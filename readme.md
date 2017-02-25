@@ -1,17 +1,13 @@
 # jc8
 
-> My pioneering app
-
-
-## Dev
-
-```
-$ npm install
-```
+> An emulator for the chip8, built as an electron app.
 
 ### Run
 
+Install the dependencies and just run the start command.
+
 ```
+$ npm install
 $ npm start
 ```
 
