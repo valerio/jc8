@@ -31,8 +31,8 @@ export function ClearScreen(c8: Chip8) {
  *@param {Chip8} c8 - the chip8 emulator.
  */
 export function ReturnFromSub(c8: Chip8) {
+	c8.sp--;
 	c8.pc = c8.stack[c8.sp];
-	c8.sp++;
 	c8.pc += 2;
 }
 
@@ -52,7 +52,7 @@ export function JumpAddr(c8: Chip8) {
  */
 export function CallSubAtNNN(c8: Chip8) {
 	c8.stack[c8.sp] = c8.pc;
-	c8.sp--;
+	c8.sp++;
 	c8.pc = c8.opcode & 0x0FFF;
 }
 
@@ -227,7 +227,7 @@ export function ShiftVxLeft(c8: Chip8) {
 export function SkipIfVxNotEqualToVy(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
 	let y = (c8.opcode >> 4) & 0xF;
-	c8.pc = c8.V[x] !== c8.V[y] ? 4 : 2;
+	c8.pc += c8.V[x] !== c8.V[y] ? 4 : 2;
 }
 
 /**
