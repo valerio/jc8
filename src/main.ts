@@ -6,21 +6,26 @@ let canvas : HTMLCanvasElement;
 
 export function init() {
 	setupCanvas();
-
 	emulator = new cpu.Chip8();
-	emulator.loadRomFile('roms/PONG');
 
-	frameHandle = setInterval(frame, 33);
-
-	window.addEventListener("keydown", emulator.handleKeyDownEvent);
-	window.addEventListener("keyup", emulator.handleKeyUpEvent);
+	emulator.loadRomFile('roms/PONG', () => {
+		frameHandle = setInterval(frame, 33);
+		window.addEventListener("keydown", emulator.handleKeyDownEvent);
+		window.addEventListener("keyup", emulator.handleKeyUpEvent);
+	});
 }
 
 function frame() {
 	try {
 		emulator.step();
+
+		if (emulator.drawFlag) {
+			draw(emulator);
+		}
+
 	} catch (error) {
 		clearInterval(frameHandle);
+		console.error(error);
 	}
 }
 
@@ -39,6 +44,22 @@ function setupCanvas() {
 		imgData.data[i] = 255;
 		imgData.data[i+1] = 255;
 		imgData.data[i+2] = 255;
+		imgData.data[i+3] = 255;
+	}
+
+	ctx.putImageData(imgData, 0, 0, 0, 0, canvas.width, canvas.height);
+}
+
+function draw(c8: cpu.Chip8) {
+	let ctx = canvas.getContext('2d');
+	let imgData = ctx.getImageData(0, 0, cpu.SCREEN_WIDTH, cpu.SCREEN_HEIGHT);
+	let imgSize = imgData.data.length;
+
+	for (let i = 0; i < imgSize; i += 4) {
+		let color = c8.vram[i] === 1 ? 255 : 0;
+		imgData.data[i] = color;
+		imgData.data[i+1] = color;
+		imgData.data[i+2] = color;
 		imgData.data[i+3] = 255;
 	}
 

@@ -69,6 +69,13 @@ export class Chip8 {
 		this.drawFlag = false;
 		this.stopped = false;
 
+		// set arrays to 0
+		this.fillArray(this.stack, 0);
+		this.fillArray(this.V, 0);
+		this.fillArray(this.memory, 0);
+		this.fillArray(this.vram, 0);
+		this.fillArray(this.keypad, 0);
+
 		for (let i = 0; i < FONT_SET.length; i++) {
 			this.memory[i] = FONT_SET[i];
 		}
@@ -80,7 +87,7 @@ export class Chip8 {
 	 * @memberOf Chip8
 	 */
 	public step() {
-		this.opcode = ((this.memory[this.pc + 1] & 0xFF) << 8) | (this.memory[this.pc] & 0xFF);
+		this.opcode = ((this.memory[this.pc] & 0xFF) << 8) | (this.memory[this.pc + 1] & 0xFF);
 		let instr = this.decode(this.opcode);
 
 		console.log('execute opcode 0x' + this.opcode.toString(16));
@@ -97,6 +104,8 @@ export class Chip8 {
 			}
 			this.soundTimer--;
 		}
+
+		this.pc &= 0xFFFF;
 	}
 
 	public handleKeyDownEvent(event: KeyboardEvent) {
@@ -107,13 +116,14 @@ export class Chip8 {
 		this.keypad[KEY_MAP[event.key]] = 0;
 	}
 
-	public loadRomFile(path: string) {
+	public loadRomFile(path: string, callback: () => void){
 		fs.readFile(path, (err, data) => {
 			if (err) {
 				throw err;
 			}
 
 			this.load(data);
+			callback();
 		});
 	}
 
@@ -131,6 +141,12 @@ export class Chip8 {
 
 		for (let i = 0; i < data.length; i++) {
 			this.memory[0x200 + i] = data[i];
+		}
+	}
+
+	private fillArray(arr: number[], value: number) {
+		for (let i = 0; i < arr.length; i++) {
+			arr[i] = value;
 		}
 	}
 
