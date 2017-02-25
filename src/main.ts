@@ -10,8 +10,12 @@ export function init() {
 
 	emulator.loadRomFile('roms/PONG', () => {
 		frameHandle = setInterval(frame, 33);
-		window.addEventListener("keydown", emulator.handleKeyDownEvent);
-		window.addEventListener("keyup", emulator.handleKeyUpEvent);
+		window.addEventListener("keydown", (e) => {
+			emulator.handleKeyDownEvent(e);
+		});
+		window.addEventListener("keyup", (e) => {
+			emulator.handleKeyUpEvent(e);
+		});
 	});
 }
 
@@ -21,6 +25,7 @@ function frame() {
 
 		if (emulator.drawFlag) {
 			draw(emulator);
+			emulator.drawFlag = false;
 		}
 
 	} catch (error) {
