@@ -25,7 +25,6 @@ function frame() {
 
 		if (emulator.drawFlag) {
 			draw(emulator);
-			emulator.drawFlag = false;
 		}
 
 	} catch (error) {
@@ -56,6 +55,8 @@ function setupCanvas() {
 }
 
 function draw(c8: cpu.Chip8) {
+	c8.drawFlag = false;
+
 	let ctx = canvas.getContext('2d');
 	let imgData = ctx.getImageData(0, 0, cpu.SCREEN_WIDTH, cpu.SCREEN_HEIGHT);
 	let imgSize = imgData.data.length;
