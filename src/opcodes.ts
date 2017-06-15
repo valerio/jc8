@@ -186,7 +186,7 @@ export function SubVyToVx(c8: Chip8) {
  */
 export function ShiftVxRight(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	let lsb = x & 1;
+	let lsb = c8.V[x] & 1;
 	c8.V[x] = c8.V[x] >> 1;
 	c8.V[0xF] = lsb;
 	c8.pc += 2;
@@ -213,7 +213,7 @@ export function SubVxToVy(c8: Chip8) {
  */
 export function ShiftVxLeft(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	let msb = x & 0x80;
+	let msb = c8.V[x] & 0x80;
 	c8.V[x] = c8.V[x] << 1;
 	c8.V[0xF] = msb;
 	c8.pc += 2;
@@ -307,7 +307,7 @@ export function Draw(c8: Chip8) {
  */
 export function SkipIfKeyPressed(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	let keyPressed = c8.keypad[x] !== 0;
+	let keyPressed = c8.keypad[c8.V[x]] !== 0;
 	c8.pc += keyPressed ? 4 : 2;
 }
 
@@ -318,7 +318,7 @@ export function SkipIfKeyPressed(c8: Chip8) {
  */
 export function SkipIfKeyNotPressed(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	let keyNotPressed = c8.keypad[x] === 0;
+	let keyNotPressed = c8.keypad[c8.V[x]] === 0;
 	c8.pc += keyNotPressed ? 4 : 2;
 }
 
