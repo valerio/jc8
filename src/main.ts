@@ -34,14 +34,10 @@ function frame() {
 }
 
 function setupCanvas() {
-	canvas = document.createElement('canvas');
-	canvas.height = cpu.SCREEN_HEIGHT * 10;
-	canvas.width = cpu.SCREEN_WIDTH * 10;
-
-	document.getElementById('container').appendChild(canvas);
+	canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
 	let ctx = canvas.getContext('2d');
-	let imgData = ctx.createImageData(cpu.SCREEN_WIDTH, cpu.SCREEN_HEIGHT);
+	let imgData = ctx.createImageData(canvas.width, canvas.height);
 	let imgSize = imgData.data.length;
 
 	for (let i = 0; i < imgSize; i += 4) {
@@ -58,7 +54,7 @@ function draw(c8: cpu.Chip8) {
 	c8.drawFlag = false;
 
 	let ctx = canvas.getContext('2d');
-	let imgData = ctx.getImageData(0, 0, cpu.SCREEN_WIDTH, cpu.SCREEN_HEIGHT);
+	let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	let imgSize = imgData.data.length;
 
 	for (let i = 0; i < imgSize; i += 4) {
