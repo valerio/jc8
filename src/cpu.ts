@@ -43,11 +43,11 @@ export class Chip8 {
 	public I: number;
 	public pc: number;
 	public sp: number;
-	public stack: number[];
-	public V: number[];
-	public memory: number[];
-	public vram: number[];
-	public keypad: number[];
+	public stack: Uint8ClampedArray;
+	public V: Uint8ClampedArray;
+	public memory: Uint8ClampedArray;
+	public vram: Uint8ClampedArray;
+	public keypad: Uint8ClampedArray;
 	public delayTimer: number;
 	public soundTimer: number;
 	public opcode: number;
@@ -58,29 +58,21 @@ export class Chip8 {
 		this.I = 0;
 		this.pc = 0x200;
 		this.sp = 0;
-		this.stack = new Array(STACK_SIZE);
-		this.V = new Array(V_REGISTERS);
-		this.memory = new Array(MEMORY_SIZE);
-		this.vram = new Array(VRAM_SIZE);
-		this.keypad = new Array(16);
+		this.stack = new Uint8ClampedArray(STACK_SIZE);
+		this.V = new Uint8ClampedArray(V_REGISTERS);
+		this.memory = new Uint8ClampedArray(MEMORY_SIZE);
+		this.vram = new Uint8ClampedArray(VRAM_SIZE);
+		this.keypad = new Uint8ClampedArray(16);
 		this.delayTimer = 0;
 		this.soundTimer = 0;
 		this.opcode = 0;
 		this.drawFlag = false;
 		this.stopped = false;
 
-		// set arrays to 0
-		this.fillArray(this.stack, 0);
-		this.fillArray(this.V, 0);
-		this.fillArray(this.memory, 0);
-		this.fillArray(this.vram, 0);
-		this.fillArray(this.keypad, 0);
-
 		for (let i = 0; i < FONT_SET.length; i++) {
 			this.memory[i] = FONT_SET[i];
 		}
 	}
-
 
 	/**
 	 * Executes a single cycle of emulation.
@@ -143,13 +135,6 @@ export class Chip8 {
 			this.memory[0x200 + i] = data[i];
 		}
 	}
-
-	private fillArray(arr: number[], value: number) {
-		for (let i = 0; i < arr.length; i++) {
-			arr[i] = value;
-		}
-	}
-
 
 	/**
 	 * Decodes an opcode and returns a function that implements it.
