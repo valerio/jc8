@@ -79,6 +79,11 @@ export class Chip8 {
 	 * @memberOf Chip8
 	 */
 	public step() {
+
+		if (this.stopped) {
+			return;
+		}
+
 		this.opcode = ((this.memory[this.pc] & 0xFF) << 8) | (this.memory[this.pc + 1] & 0xFF);
 		let instr = this.decode(this.opcode);
 
