@@ -101,11 +101,15 @@ export class Chip8 {
 	}
 
 	public handleKeyDownEvent(event: KeyboardEvent) {
-		this.keypad[KEY_MAP[event.key]] = 1;
+		this.handleInput(event.key, true);
 	}
 
 	public handleKeyUpEvent(event: KeyboardEvent) {
-		this.keypad[KEY_MAP[event.key]] = 0;
+		this.handleInput(event.key, false);
+	}
+
+	private handleInput(key: string, down: boolean) {
+		this.keypad[KEY_MAP[key]] = down ? 1 : 0;
 	}
 
 	public loadRomFile(path: string, callback: () => void){
