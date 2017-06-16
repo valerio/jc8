@@ -43,7 +43,7 @@ export class Chip8 {
 	public I: number;
 	public pc: number;
 	public sp: number;
-	public stack: Uint8ClampedArray;
+	public stack: Uint16Array;
 	public V: Uint8ClampedArray;
 	public memory: Uint8ClampedArray;
 	public vram: Uint8ClampedArray;
@@ -58,7 +58,7 @@ export class Chip8 {
 		this.I = 0;
 		this.pc = 0x200;
 		this.sp = 0;
-		this.stack = new Uint8ClampedArray(STACK_SIZE);
+		this.stack = new Uint16Array(STACK_SIZE);
 		this.V = new Uint8ClampedArray(V_REGISTERS);
 		this.memory = new Uint8ClampedArray(MEMORY_SIZE);
 		this.vram = new Uint8ClampedArray(VRAM_SIZE);
