@@ -44,10 +44,10 @@ export class Chip8 {
 	public pc: number;
 	public sp: number;
 	public stack: Uint16Array;
-	public V: Uint8ClampedArray;
-	public memory: Uint8ClampedArray;
-	public vram: Uint8ClampedArray;
-	public keypad: Uint8ClampedArray;
+	public V: Uint8Array;
+	public memory: Uint8Array;
+	public vram: Uint8Array;
+	public keypad: Uint8Array;
 	public delayTimer: number;
 	public soundTimer: number;
 	public opcode: number;
@@ -59,10 +59,10 @@ export class Chip8 {
 		this.pc = 0x200;
 		this.sp = 0;
 		this.stack = new Uint16Array(STACK_SIZE);
-		this.V = new Uint8ClampedArray(V_REGISTERS);
-		this.memory = new Uint8ClampedArray(MEMORY_SIZE);
-		this.vram = new Uint8ClampedArray(VRAM_SIZE);
-		this.keypad = new Uint8ClampedArray(16);
+		this.V = new Uint8Array(V_REGISTERS);
+		this.memory = new Uint8Array(MEMORY_SIZE);
+		this.vram = new Uint8Array(VRAM_SIZE);
+		this.keypad = new Uint8Array(16);
 		this.delayTimer = 0;
 		this.soundTimer = 0;
 		this.opcode = 0;
@@ -86,8 +86,7 @@ export class Chip8 {
 
 		this.opcode = ((this.memory[this.pc] & 0xFF) << 8) | (this.memory[this.pc + 1] & 0xFF);
 		let instr = this.decode(this.opcode);
-
-		console.log('execute opcode 0x' + this.opcode.toString(16));
+		// console.log('execute opcode 0x' + this.opcode.toString(16));
 
 		instr(this);
 
@@ -103,6 +102,7 @@ export class Chip8 {
 		}
 
 		this.pc &= 0xFFFF;
+		this.I &= 0xFFFF;
 	}
 
 	public handleKeyDownEvent(event: KeyboardEvent) {

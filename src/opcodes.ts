@@ -22,6 +22,8 @@ export function ClearScreen(c8: Chip8) {
 	for (let i = 0; i < c8.vram.length; i++) {
 		c8.vram[i] = 0;
 	}
+
+	c8.drawFlag = true;
 	c8.pc += 2;
 }
 
@@ -32,8 +34,7 @@ export function ClearScreen(c8: Chip8) {
  */
 export function ReturnFromSub(c8: Chip8) {
 	c8.sp--;
-	c8.pc = c8.stack[c8.sp];
-	c8.pc += 2;
+	c8.pc = c8.stack[c8.sp] + 2;
 }
 
 /**
@@ -96,7 +97,7 @@ export function SkipIfVxEqualToVy(c8: Chip8) {
  */
 export function AddNNToVx(c8: Chip8) {
 	let x = (c8.opcode >> 8) & 0xF;
-	let nn = (c8.opcode & 0x00FF);
+	let nn = c8.opcode & 0x00FF;
 	c8.V[x] += nn;
 	c8.pc += 2;
 }
