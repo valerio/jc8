@@ -8,14 +8,10 @@ export function init() {
 	setupCanvas();
 	emulator = new cpu.Chip8();
 
-	emulator.loadRomFile('roms/PONG', () => {
+	emulator.loadRomFile('roms/INVADERS', () => {
 		frameHandle = setInterval(frame, 33);
-		window.addEventListener("keydown", (e) => {
-			emulator.handleKeyDownEvent(e);
-		});
-		window.addEventListener("keyup", (e) => {
-			emulator.handleKeyUpEvent(e);
-		});
+		window.addEventListener("keydown", emulator.handleKeyDownEvent);
+		window.addEventListener("keyup", emulator.handleKeyUpEvent);
 	});
 }
 
@@ -54,16 +50,19 @@ function draw(c8: cpu.Chip8) {
 	c8.drawFlag = false;
 
 	let ctx = canvas.getContext('2d');
-	let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	let imgSize = imgData.data.length;
+	// let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	let img = new ImageData(cpu.SCREEN_WIDTH, cpu.SCREEN_HEIGHT);
+	// let imgData = ctx.getImageData(0, 0, cpu.SCREEN_WIDTH, cpu.SCREEN_HEIGHT);
+	// let imgSize = imgData.data.length;
 
-	for (let i = 0; i < imgSize; i += 4) {
+	for (let i = 0; i < c8.vram.length; i++) {
+		let imgIndex = i * 4;
 		let color = c8.vram[i] === 1 ? 255 : 0;
-		imgData.data[i] = color;
-		imgData.data[i+1] = color;
-		imgData.data[i+2] = color;
-		imgData.data[i+3] = 255;
+		img.data[imgIndex] = color;
+		img.data[imgIndex+1] = color;
+		img.data[imgIndex+2] = color;
+		img.data[imgIndex+3] = 255;
 	}
 
-	ctx.putImageData(imgData, 0, 0, 0, 0, canvas.width, canvas.height);
+	ctx.putImageData(img, 0, 0, 0, 0, canvas.width, canvas.height);
 }
